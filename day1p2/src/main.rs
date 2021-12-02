@@ -2,18 +2,15 @@ use std::io::{BufRead, BufReader};
 use std::fs::File;
 
 fn main() {
-    let mut numbers: Vec<u32> = Vec::new();
-
     let reader = BufReader::new(File::open("input.txt").expect("Cannot open input.txt"));
 
-    for line in reader.lines() {
-         numbers.push(line.unwrap().parse::<u32>().unwrap());
-    }
-
+    let mut numbers: Vec<u32> = Vec::new();
     let mut increments = 0;
     let mut index = 0;
 
-    while index < numbers.len() {
+    for line in reader.lines() {
+        numbers.push(line.unwrap().parse::<u32>().unwrap());
+
         if index < 3 {
             index += 1;
             continue;
@@ -30,4 +27,6 @@ fn main() {
     }
 
     println!("Number of increments: {}", increments);
+
+    assert_eq!(increments, 1252);
 }

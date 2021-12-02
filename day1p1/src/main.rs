@@ -3,18 +3,22 @@ use std::fs::File;
 
 fn main() {
     let reader = BufReader::new(File::open("input.txt").expect("Cannot open input.txt"));
-    let mut increments:i32 = -1; // ignore the "first" increment
-    let mut previous:i32 = 0;
+
+    let mut increments:u32 = 0;
+    let mut previous:Result<u32, u32> = Err(0);
 
     for line in reader.lines() {
-        let number = line.unwrap().parse::<i32>().unwrap();
+        let current = line.unwrap().parse::<u32>().unwrap();
 
-        if number > previous {
-            increments += 1;
+        match previous {
+            Ok(number) => if current > number { increments += 1 },
+            Err(_) => ()
         }
 
-        previous = number;
+        previous = Ok(current);
     }
 
     println!("Number of increments: {}", increments);
+
+    assert_eq!(increments, 1226);
 }
